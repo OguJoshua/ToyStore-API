@@ -1,0 +1,3 @@
+2020-12-24 22:21:01.4123 INFO Accesed Home Controller
+2020-12-24 22:26:23.6148 ERROR This is an Error
+2020-12-24 22:27:44.8089 WARN This is a warning
