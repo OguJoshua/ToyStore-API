@@ -8,9 +8,17 @@ namespace ToyStore_API.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+
+        public DbSet<Toy> Toys { get; set; }
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
     }
+
 }
+
