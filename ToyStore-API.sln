@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToyStore-API", "ToyStore-API.csproj", "{D87B4E9C-B722-4385-8557-3FDA585A492B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToyStore-API", "ToyStore-API.csproj", "{D87B4E9C-B722-4385-8557-3FDA585A492B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToyStore-UI", "..\ToyStore-UI\ToyStore-UI.csproj", "{9DE36533-74B8-4AEF-AAD2-29C1F1C92BBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D87B4E9C-B722-4385-8557-3FDA585A492B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D87B4E9C-B722-4385-8557-3FDA585A492B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D87B4E9C-B722-4385-8557-3FDA585A492B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DE36533-74B8-4AEF-AAD2-29C1F1C92BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DE36533-74B8-4AEF-AAD2-29C1F1C92BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DE36533-74B8-4AEF-AAD2-29C1F1C92BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE36533-74B8-4AEF-AAD2-29C1F1C92BBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

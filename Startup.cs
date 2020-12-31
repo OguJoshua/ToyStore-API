@@ -40,7 +40,7 @@ namespace ToyStore_API
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>() //extracted from () "options => options.SignIn.RequireConfirmedAccount = true"
+            services.AddDefaultIdentity<IdentityUser>()  
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -71,19 +71,19 @@ namespace ToyStore_API
 
 
 
-            services.AddSwaggerGen(c => { 
+           //services.AddSwaggerGen(c => { 
             
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "Toy Store API",
-                    Version = "v1",
-                    Description = "This is an API for Toy Store"
-                });
+           //     c.SwaggerDoc("v1", new OpenApiInfo
+           //     {
+           //         Title = "Toy Store API",
+           //         Version = "v1",
+           //         Description = "This is an API for Toy Store"
+           //     });
 
-                var xfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xpath = Path.Combine(AppContext.BaseDirectory, xfile);
-                c.IncludeXmlComments(xpath);
-            });
+           //     var xfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+           //     var xpath = Path.Combine(AppContext.BaseDirectory, xfile);
+           //     c.IncludeXmlComments(xpath);
+           // });
 
 
             services.AddSingleton<ILoggerService, LoggerService>();
@@ -110,12 +110,12 @@ namespace ToyStore_API
                 app.UseHsts();
             }
 
-            app.UseSwagger();
+            //app.UseSwagger();
 
-            app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Toy Store API");
-                c.RoutePrefix = "";
-            });
+            //app.UseSwaggerUI(c => {
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Toy Store API");
+            //    c.RoutePrefix = "";
+            //});
 
             app.UseHttpsRedirection();
 

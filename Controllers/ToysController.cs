@@ -49,6 +49,7 @@ namespace ToyStore_API.Controllers
                 var response = _mapper.Map<IList<ToyDTO>>(toys);
                 _logger.LogInfo($"{location}: Successful");
 
+              
                 return Ok(response);
             }
             catch (Exception e)
@@ -56,7 +57,7 @@ namespace ToyStore_API.Controllers
 
                 return internalError($"{location}: {e.Message} - {e.InnerException}");
             }
-
+             
         }
 
         /// <summary>

@@ -62,16 +62,24 @@
         </member>
         <member name="M:ToyStore_API.Controllers.ManufacturersController.Create(ToyStore_API.DTOs.ManufacturerCreateDTO)">
             <summary>
-            Create a manufacturer
+            Creates a manufacturer
             </summary>
-            <param name="manufacturerDTO"></param>
+            <param name="manufacturer"></param>
             <returns></returns>
         </member>
         <member name="M:ToyStore_API.Controllers.ManufacturersController.Update(System.Int32,ToyStore_API.DTOs.ManufacturerUpdateDTO)">
             <summary>
-            Create a manufacturer
+            Updates a manufacturer
             </summary>
+            <param name="id"></param>param>
             <param name="manufacturerDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ToyStore_API.Controllers.ManufacturersController.Delete(System.Int32)">
+            <summary>
+            Removes a manufacturer by id
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="T:ToyStore_API.Controllers.ToysController">
@@ -101,10 +109,17 @@
         </member>
         <member name="M:ToyStore_API.Controllers.ToysController.Update(System.Int32,ToyStore_API.DTOs.ToyUpdateDTO)">
             <summary>
-            /
+            Update a Toy
             </summary>
             <param name="id"></param>
             <param name="toyDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ToyStore_API.Controllers.UsersController.Register(ToyStore_API.DTOs.UserDTO)">
+            <summary>
+            User Registration EndPoint
+            </summary>
+            <param name="userDTO"></param>
             <returns></returns>
         </member>
         <member name="M:ToyStore_API.Controllers.UsersController.Login(ToyStore_API.DTOs.UserDTO)">
