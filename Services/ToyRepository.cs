@@ -8,7 +8,7 @@ using ToyStore_API.Data;
 
 namespace ToyStore_API.Services
 {
-    public class ToyRepository : IToyRepository
+    public class ToyRepository :IToyRepository
     {
         private readonly ApplicationDbContext _db;
         public ToyRepository(ApplicationDbContext db)
@@ -27,15 +27,19 @@ namespace ToyStore_API.Services
             return await Save();
         }
 
-        public async Task<List<Toy>> FindAll()
+        public async Task<IList<Toy>> FindAll()
         {
-            var toys = await _db.Toys.ToListAsync();
+            var toys = await _db.Toys
+            .Include(q => q.Seller)
+            .ToListAsync();
             return toys; 
         }
 
         public async  Task<Toy> FindById(int id)
         {
-            var toy = await _db.Toys.FindAsync(id);
+            var toy = await _db.Toys
+               .Include(q => q.Seller)
+               .FirstOrDefaultAsync(q => q.Id ==id);
             return toy;
         }
 

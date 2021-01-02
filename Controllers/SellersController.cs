@@ -17,48 +17,47 @@ namespace ToyStore_API.Controllers
 {
 
     /// <summary>
-    /// Endpoint used to interact with the Manufacturers in the Toy store's database
+    /// Endpoint used to interact with the sellers in the Toy store's database
     /// </summary>
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public class ManufacturersController : ControllerBase
+    public class sellersController : ControllerBase
     {
         
-        private readonly IManufacturerRepository _manufacturerRepository;
+        private readonly ISellerRepository _sellerRepository;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
 
 
-        public ManufacturersController(IManufacturerRepository manufacturerRepository, ILoggerService logger, IMapper mapper)
+        public sellersController(ISellerRepository sellerRepository, ILoggerService logger, IMapper mapper)
         {
-            _manufacturerRepository = manufacturerRepository;
+            _sellerRepository = sellerRepository;
             _logger = logger;
              _mapper = mapper;
     }
         /// <summary>
-        /// Get all manufacturers
+        /// Get all sellers
         /// </summary>
-        /// <returns>LIST OF MANUFACTURERS</returns>
+        /// <returns>LIST OF sellerS</returns>
 
         [HttpGet]
-        [Authorize(Roles = "Customer, Administrators")]
-        [AllowAnonymous]
+       
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
        
 
-        public async Task<IActionResult> GetManufacturers()
+        public async Task<IActionResult> Getsellers()
         {
             var location = GetControllerActionNames();
 
             try
             {
-                _logger.LogInfo($"{location}Attempted call");
-                var manufacturers = await _manufacturerRepository.FindAll();
-                var response = _mapper.Map<IList<ManufacturerDTO>>(manufacturers);
-                _logger.LogInfo("Successfully got all Manufacturers");
+                _logger.LogInfo($"{location}: Attempted call");
+                var sellers = await _sellerRepository.FindAll();
+                var response = _mapper.Map<IList<SellerDTO>>(sellers);
+                _logger.LogInfo($"{location}: Successfully");
                 return Ok(response);
             }
             catch (Exception e)
@@ -69,30 +68,29 @@ namespace ToyStore_API.Controllers
             
         }
         /// <summary>
-        /// Get a manufacturer by Id
+        /// Get a seller by Id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A Manufacturer's record</returns>
+        /// <returns>A seller's record</returns>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Customer, Administrators")]
-        [AllowAnonymous]
+       
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> GetManufacturer(int id)
+        public async Task<IActionResult> Getseller(int id)
         {
             var location = GetControllerActionNames();
             try
             {
                 _logger.LogInfo($"{location}: Attempted call for  id:{id}");
-                var manufacturer = await _manufacturerRepository.FindById(id);
-                if (manufacturer == null)
+                var seller = await _sellerRepository.FindById(id);
+                if (seller == null)
                 {
                     _logger.LogWarn($"{location}: Failed to retrieve record with id:{id}");
                     return NotFound();
                 }
-                var response = _mapper.Map<ManufacturerDTO>(manufacturer);
+                var response = _mapper.Map<SellerDTO>(seller);
                 _logger.LogInfo($"{location} : Succesfully got record with id:{id}");
                 return Ok(response);
             }
@@ -102,23 +100,23 @@ namespace ToyStore_API.Controllers
             }
          }
         /// <summary>
-        /// Creates a manufacturer
+        /// Creates a seller
         /// </summary>
-        /// <param name="manufacturer"></param>
+        /// <param name="seller"></param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles ="Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] ManufacturerCreateDTO manufacturerDTO)
+        public async Task<IActionResult> Create([FromBody] SellerCreateDTO sellerDTO)
         {
             var location = GetControllerActionNames();
 
             try
             {
                 _logger.LogInfo($"{location}: Create Attempted");
-                if (manufacturerDTO == null)
+                if (sellerDTO == null)
                 {
                     _logger.LogWarn("Empty Request was submitted");
                     return BadRequest(ModelState);
@@ -129,14 +127,14 @@ namespace ToyStore_API.Controllers
                     _logger.LogWarn($"{location}: Data was Incomplete");
                     return BadRequest(ModelState);
                 }
-                var manufacturer = _mapper.Map<Manufacturer>(manufacturerDTO);
-                var isSuccess = await _manufacturerRepository.Create(manufacturer);
+                var seller = _mapper.Map<Seller>(sellerDTO);
+                var isSuccess = await _sellerRepository.Create(seller);
                 if (!isSuccess)
                 {
                     return internalError($"{location}: Creation failed! ");
                 }
                 _logger.LogInfo($"{location}: Creation was successful");               
-                return Created("Create", new { manufacturer });
+                return Created("Create", new { seller });
             }
             catch (Exception e)
             {
@@ -147,28 +145,28 @@ namespace ToyStore_API.Controllers
         }
 
         /// <summary>
-        /// Updates a manufacturer
+        /// Updates a seller
         /// </summary>
         /// <param name="id"></param>param>
-        /// <param name="manufacturerDTO"></param>
+        /// <param name="sellerDTO"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator, Customer")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, [FromBody] ManufacturerUpdateDTO manufacturerDTO)
+        public async Task<IActionResult> Update(int id, [FromBody] SellerUpdateDTO sellerDTO)
         {
             var location = GetControllerActionNames();
             try
             {
-                _logger.LogInfo($"Manufacturer with id : {id} Update Attempted");
-                if (id < 1 || manufacturerDTO == null || id != manufacturerDTO.Id)
+                _logger.LogInfo($"seller with id : {id} Update Attempted");
+                if (id < 1 || sellerDTO == null || id != sellerDTO.Id)
                 {
                     _logger.LogWarn($"{location}: Update failed with bad data - id: {id}");
                     return BadRequest();
                 }
-                var isExists = await _manufacturerRepository.isExists(id);
+                var isExists = await _sellerRepository.isExists(id);
                 if (!isExists)
                 {
                     _logger.LogWarn($"{location}:  failed  to retrieve record with id: {id}");
@@ -179,8 +177,8 @@ namespace ToyStore_API.Controllers
                     _logger.LogWarn($"Data was Incomplete ");
                     return BadRequest(ModelState);
                 }
-                var manufacturer = _mapper.Map<Manufacturer>(manufacturerDTO);
-                var isSuccess = await _manufacturerRepository.Update(manufacturer);
+                var seller = _mapper.Map<Seller>(sellerDTO);
+                var isSuccess = await _sellerRepository.Update(seller);
                 if (!isSuccess)
                 {
                     return internalError($"{location}: Update  Failed for record with id: {id} ");
@@ -196,12 +194,12 @@ namespace ToyStore_API.Controllers
         }
 
         /// <summary>
-        /// Removes a manufacturer by id
+        /// Removes a seller by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -218,16 +216,16 @@ namespace ToyStore_API.Controllers
                     return BadRequest();
 
                 }
-                var isExists = await _manufacturerRepository.isExists(id);
+                var isExists = await _sellerRepository.isExists(id);
                 if (!isExists)
                 {
                     _logger.LogWarn($"{location}: Failed to retrieve record with id:  {id}");
                     return NotFound();
                 }
 
-                var manufacturer = await _manufacturerRepository.FindById(id);
+                var seller = await _sellerRepository.FindById(id);
                
-                var isSuccess = await _manufacturerRepository.Delete(manufacturer);
+                var isSuccess = await _sellerRepository.Delete(seller);
                 if(!isSuccess)
                 {
                     return internalError($"{location}: Delete Failed for record  with id:  {id}");

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,18 +24,24 @@ namespace ToyStore_API.Controllers
         private readonly IToyRepository _toyRepository;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _env;
 
 
-        public ToysController(IToyRepository toyRepository, ILoggerService logger, IMapper mapper)
+        public ToysController(IToyRepository toyRepository, ILoggerService logger, IMapper mapper, IWebHostEnvironment env)
         {
             _toyRepository = toyRepository;
             _logger = logger;
             _mapper = mapper;
+            _env = env;
         }
+        private string GetImagePath(string fileName)
+            => ($"{_env.ContentRootPath}\\uploads\\{fileName}");
+
+
         /// <summary>
         /// Get all Toys
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A List of Toys</returns>
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -48,8 +55,21 @@ namespace ToyStore_API.Controllers
                 var toys = await _toyRepository.FindAll();
                 var response = _mapper.Map<IList<ToyDTO>>(toys);
                 _logger.LogInfo($"{location}: Successful");
+                foreach (var item in response)
+                {
+                    if (!string.IsNullOrEmpty(item.Image))
+                    {
+                        var imgPath = GetImagePath(item.Image);
+                        if (System.IO.File.Exists(imgPath))
+                        {
+                            byte[] imgBytes = System.IO.File.ReadAllBytes(imgPath);
+                            item.File = Convert.ToBase64String(imgBytes);
+                        }
+                    }
+                }
+                _logger.LogInfo($"{location}: Successful");
 
-              
+
                 return Ok(response);
             }
             catch (Exception e)
@@ -81,18 +101,24 @@ namespace ToyStore_API.Controllers
                     _logger.LogWarn($"{location}: Failed to retrieve record with id: {id}");
                     return NotFound();
                 }
-                var response = _mapper.Map<IList<ToyDTO>>(toy);
+                var response = _mapper.Map<ToyDTO>(toy);
+                if (!string.IsNullOrEmpty(response.Image))
+                {
+                    var imgPath = GetImagePath(toy.Image);
+                    if (System.IO.File.Exists(imgPath))
+                    {
+                        byte[] imgBytes = System.IO.File.ReadAllBytes(imgPath);
+                        response.File = Convert.ToBase64String(imgBytes);
+                    }
+                }
+
                 _logger.LogInfo($"{location}: Successfully got record with id: {id}");
                 return Ok(response);
-
-
             }
             catch (Exception e)
             {
-
                 return internalError($"{location}: {e.Message} - {e.InnerException}");
             }
-
         }
         /// <summary>
         /// Creates a new toy
@@ -127,14 +153,18 @@ namespace ToyStore_API.Controllers
                 {
                     return internalError($"{location}: Creation failed");
                 }
-                _logger.LogInfo($"{location}: creation was successful");
-                _logger.LogInfo($"{location}: {toy}");
-                return Created("create", new { toy });
+                if(!string.IsNullOrEmpty(toyDTO.File))
+                {
+                    var imgPath = GetImagePath(toyDTO.Image);
+                    byte[] imageBytes = Convert.FromBase64String(toyDTO.File);
+                    System.IO.File.WriteAllBytes(imgPath, imageBytes);
+                }
+                _logger.LogInfo($"{location}: Creation was successful");
+                return Created("Create", new { toy });
             }
             catch (Exception e)
             {
                 return internalError($"{location}: {e.Message} - {e.InnerException}");
-
             }
         }
         /// <summary>
@@ -147,6 +177,7 @@ namespace ToyStore_API.Controllers
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         public async Task<IActionResult> Update(int id, [FromBody] ToyUpdateDTO toyDTO)
@@ -172,22 +203,42 @@ namespace ToyStore_API.Controllers
                     return BadRequest(ModelState);
 
                 }
-                var toy = _mapper.Map<Toy>(toyDTO);
-                var isSuccess = await _toyRepository.Update(toy);
+                var oldImage = await _toyRepository.GetImageFileName(id);
+                var book = _mapper.Map<Toy>(toyDTO);
+                var isSuccess = await _toyRepository.Update(book);
                 if (!isSuccess)
                 {
-                    return internalError($"{location}: Update failed");
+                    return internalError($"{location}: Update failed for record with id: {id}");
                 }
-                _logger.LogWarn($"{location}: Record with id: {id}  successfully updated");
+
+                if (!toyDTO.Image.Equals(oldImage))
+                {
+                    if (System.IO.File.Exists(GetImagePath(oldImage)))
+                    {
+                        System.IO.File.Delete(GetImagePath(oldImage));
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(toyDTO.File))
+                {
+                    byte[] imageBytes = Convert.FromBase64String(toyDTO.File);
+                    System.IO.File.WriteAllBytes(GetImagePath(toyDTO.Image), imageBytes);
+                }
+
+                _logger.LogInfo($"{location}: Record with id: {id} successfully updated");
                 return NoContent();
             }
             catch (Exception e)
             {
                 return internalError($"{location}: {e.Message} - {e.InnerException}");
-
             }
         }
 
+        /// <summary>
+        /// Removes an toy by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -244,7 +295,7 @@ namespace ToyStore_API.Controllers
         private ObjectResult internalError(string message)
         {
             _logger.LogError(message);
-            return StatusCode(500, "Something went wrong. Please contact the Administrator. Thank You!");
+            return StatusCode(500, "Something went wrong. Please reach out to the Administrator. Thank You!");
         }
 
     }

@@ -12,13 +12,12 @@ namespace ToyStore_API.DTOs
         public int Name { get; set; }
         public int? YearOfProduction { get; set; }
         public int ModelNumber { get; set; }
-
-        public string Summary { get; set; }
+       public string Summary { get; set; }
         public string Image { get; set; }
         public double? Price { get; set; }
-        public int? ManufacturerId { get; set; }
-
-        public virtual ManufacturerDTO Manufacturer { get; set; }
+        public string File { get; set; }
+        public int? SellerId { get; set; }
+       public virtual SellerDTO seller { get; set; }
     }
 
     public class ToyCreateDTO
@@ -32,8 +31,9 @@ namespace ToyStore_API.DTOs
         public string Image { get; set; }
         public double? Price { get; set; }
         [Required]
-        public int ManufacturerId { get; set; }
-        
+        public int sellerId { get; set; }
+        public string File { get; set; }
+
     }
     public class ToyUpdateDTO
     {
@@ -47,7 +47,8 @@ namespace ToyStore_API.DTOs
         public string Summary { get; set; }
         public string Image { get; set; }
         public decimal? Price { get; set; }
-        
+        public string File { get; set; }
+
 
     }
 }

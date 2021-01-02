@@ -22,7 +22,7 @@ namespace ToyStore_API.Data
             {
                 var user = new IdentityUser
                 {
-                    UserName = "admin",
+                    UserName = "admin@toystore.com",
                     Email = "admin@toystore.com"
 
                 };
@@ -36,7 +36,7 @@ namespace ToyStore_API.Data
             {
                 var user = new IdentityUser
                 {
-                    UserName = "customer1",
+                    UserName = "customer1@gmail.com",
                     Email = "customer1@gmail.com"
 
                 };
@@ -50,14 +50,14 @@ namespace ToyStore_API.Data
             {
                 var user = new IdentityUser
                 {
-                    UserName = "customer2",
+                    UserName = "customer2@gmail.com",
                     Email = "customer2@gmail.com"
 
                 };
                 var result = await userManager.CreateAsync(user, "P#ssword9");
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Customer2");
+                    await userManager.AddToRoleAsync(user, "Customer");
                 }
             }
 

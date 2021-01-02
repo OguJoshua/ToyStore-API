@@ -6,7 +6,7 @@ using ToyStore_API.Data;
 
 namespace ToyStore_API.Contracts
 {
-    public interface IManufacturerRepository: IRepositoryBase<Manufacturer>
+    public interface ISellerRepository: IRepositoryBase<Seller>
     {
 
     }

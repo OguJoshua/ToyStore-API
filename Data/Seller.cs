@@ -6,14 +6,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ToyStore_API.Data
 {
-    [Table("Manufacturers")]
-    public partial class Manufacturer
+    [Table("Sellers")]
+    public partial class Seller
     {
         public int Id { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
 
         public string Profile { get; set; }
 

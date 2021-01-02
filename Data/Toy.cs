@@ -17,9 +17,9 @@ namespace ToyStore_API.Data
         public string Summary { get; set; }
         public string Image { get; set; }
         public double? Price { get; set; }
-        public int? ManufacturerId { get; set; }
+        public int? sellerId { get; set; }
 
-        public virtual Manufacturer Manufacturer { get; set; } 
+        public virtual Seller Seller { get; set; } 
 
     }
 }

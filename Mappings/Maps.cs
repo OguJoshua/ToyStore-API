@@ -12,9 +12,9 @@ namespace ToyStore_API.Mappings
     {
         public Maps()
         {
-            CreateMap<Manufacturer, ManufacturerDTO>().ReverseMap();
-            CreateMap<Manufacturer, ManufacturerCreateDTO>().ReverseMap();
-            CreateMap<Manufacturer, ManufacturerUpdateDTO>().ReverseMap();
+            CreateMap<Seller, SellerDTO>().ReverseMap();
+            CreateMap<Seller, SellerCreateDTO>().ReverseMap();
+            CreateMap<Seller, SellerUpdateDTO>().ReverseMap();
             CreateMap<Toy, ToyDTO>().ReverseMap();
             CreateMap<Toy, ToyDTO>().ReverseMap();
         }

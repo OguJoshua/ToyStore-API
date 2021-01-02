@@ -42,42 +42,42 @@
             </summary>
             <param name="id"></param>
         </member>
-        <member name="T:ToyStore_API.Controllers.ManufacturersController">
+        <member name="T:ToyStore_API.Controllers.sellersController">
             <summary>
-            Endpoint used to interact with the Manufacturers in the Toy store's database
+            Endpoint used to interact with the sellers in the Toy store's database
             </summary>
         </member>
-        <member name="M:ToyStore_API.Controllers.ManufacturersController.GetManufacturers">
+        <member name="M:ToyStore_API.Controllers.sellersController.Getsellers">
             <summary>
-            Get all manufacturers
+            Get all sellers
             </summary>
-            <returns>LIST OF MANUFACTURERS</returns>
+            <returns>LIST OF sellerS</returns>
         </member>
-        <member name="M:ToyStore_API.Controllers.ManufacturersController.GetManufacturer(System.Int32)">
+        <member name="M:ToyStore_API.Controllers.sellersController.Getseller(System.Int32)">
             <summary>
-            Get a manufacturer by Id
+            Get a seller by Id
             </summary>
             <param name="id"></param>
-            <returns>A Manufacturer's record</returns>
+            <returns>A seller's record</returns>
         </member>
-        <member name="M:ToyStore_API.Controllers.ManufacturersController.Create(ToyStore_API.DTOs.ManufacturerCreateDTO)">
+        <member name="M:ToyStore_API.Controllers.sellersController.Create(ToyStore_API.DTOs.sellerCreateDTO)">
             <summary>
-            Creates a manufacturer
+            Creates a seller
             </summary>
-            <param name="manufacturer"></param>
+            <param name="seller"></param>
             <returns></returns>
         </member>
-        <member name="M:ToyStore_API.Controllers.ManufacturersController.Update(System.Int32,ToyStore_API.DTOs.ManufacturerUpdateDTO)">
+        <member name="M:ToyStore_API.Controllers.sellersController.Update(System.Int32,ToyStore_API.DTOs.sellerUpdateDTO)">
             <summary>
-            Updates a manufacturer
+            Updates a seller
             </summary>
             <param name="id"></param>param>
-            <param name="manufacturerDTO"></param>
+            <param name="sellerDTO"></param>
             <returns></returns>
         </member>
-        <member name="M:ToyStore_API.Controllers.ManufacturersController.Delete(System.Int32)">
+        <member name="M:ToyStore_API.Controllers.sellersController.Delete(System.Int32)">
             <summary>
-            Removes a manufacturer by id
+            Removes a seller by id
             </summary>
             <param name="id"></param>
             <returns></returns>

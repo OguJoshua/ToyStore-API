@@ -8,5 +8,6 @@ namespace ToyStore_API.Contracts
 {
     public interface IToyRepository:IRepositoryBase<Toy>
     {
+        public Task<string> GetImageFileName(int id);
     }
 }

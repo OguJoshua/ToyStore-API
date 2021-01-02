@@ -8,7 +8,7 @@ namespace ToyStore_API.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
 
         public DbSet<Toy> Toys { get; set; }
 

@@ -57,29 +57,26 @@ namespace ToyStore_API.Controllers
 
                 if (!result.Succeeded)
                 {
-                    _logger.LogError($"{location}: {username} User Registration Attempt Failed");
                     foreach (var error in result.Errors)
                     {
                         _logger.LogError($"{location}: {error.Code} {error.Description}");
                     }
                     return InternalError($"{location}: {username} User Registration Attempt Failed");
                 }
-                return Ok(new { result.Succeeded });
+                await _userManager.AddToRoleAsync(user, "Customer");
+                return Created("login", new { result.Succeeded });
             }
             catch (Exception e)
             {
                 return InternalError($"{location}: {e.Message} - {e.InnerException}");
             }
-        
-        
-        
         }
         /// <summary>
         /// User login endpoint
         /// </summary>
         /// <param name="userDTO"></param>
         /// <returns></returns>
-        
+
         [Route("login")]
         [AllowAnonymous]
         [HttpPost]
@@ -96,7 +93,8 @@ namespace ToyStore_API.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInfo($"{location}:{username} Successfully Authenticated ");
-                    var user = await _userManager.FindByNameAsync(username);
+                    var user = await _userManager.FindByEmailAsync(username);
+                    _logger.LogInfo($"{location}: Generating Token");
                     var tokenString = await GenerateJSOwebToken(user);
                     return Ok(new { token = tokenString});
                 }
@@ -129,7 +127,7 @@ namespace ToyStore_API.Controllers
                 ,_config["Jwt:Issuer"],
                 claims,
                 null,
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddHours(5),
                 signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -149,7 +147,7 @@ namespace ToyStore_API.Controllers
         {
 
             _logger.LogError(message);
-            return StatusCode(500, "Something went wrong. Please contact the Administrator");
+            return StatusCode(500, "Something went wrong. Please reach out to the Administrator");
         }
 
     }    

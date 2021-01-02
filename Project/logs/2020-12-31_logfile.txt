@@ -1,7 +1,7 @@
 2020-12-31 12:14:39.1024 INFO Accesed Home Controller
-2020-12-31 12:26:35.4765 INFO Manufacturers - GetManufacturersAttempted call
-2020-12-31 12:26:36.8145 INFO Successfully got all Manufacturers
-2020-12-31 12:27:26.6500 INFO Manufacturers - GetManufacturersAttempted call
-2020-12-31 12:27:26.7903 INFO Successfully got all Manufacturers
-2020-12-31 12:27:52.9661 INFO Manufacturers - GetManufacturersAttempted call
-2020-12-31 12:27:53.1624 INFO Successfully got all Manufacturers
+2020-12-31 12:26:35.4765 INFO sellers - GetsellersAttempted call
+2020-12-31 12:26:36.8145 INFO Successfully got all sellers
+2020-12-31 12:27:26.6500 INFO sellers - GetsellersAttempted call
+2020-12-31 12:27:26.7903 INFO Successfully got all sellers
+2020-12-31 12:27:52.9661 INFO sellers - GetsellersAttempted call
+2020-12-31 12:27:53.1624 INFO Successfully got all sellers

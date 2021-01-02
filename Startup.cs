@@ -22,6 +22,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Net.Http.Headers;
 
 namespace ToyStore_API
 {
@@ -87,14 +88,17 @@ namespace ToyStore_API
 
 
             services.AddSingleton<ILoggerService, LoggerService>();
-            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
+            services.AddScoped<ISellerRepository, SellerRepository>();
             services.AddScoped<IToyRepository, ToyRepository>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(op =>
+                op.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+        public void Configure(IApplicationBuilder app, 
+            IWebHostEnvironment env, 
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
